@@ -14,6 +14,7 @@ import AdminUser from "./AdminPages/modules/AdminUser/AdminUser";
 import TypeJobs from "./AdminPages/modules/TypeJobs";
 import AdminJobs from "./AdminPages/modules/AdminJobs";
 import JobForRent from "./AdminPages/modules/JobForRent";
+import Comments from "./AdminPages/modules/Comments";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
               <Route path="/admin/typeJobs" element={<TypeJobs />} /> 
               <Route path="/admin/jobs" element={<AdminJobs />} />
               <Route path="/admin/jobForRent" element={<JobForRent />} />
+              <Route path="/admin/comments" element={<Comments />} />
 
             </Route>
           </Route>

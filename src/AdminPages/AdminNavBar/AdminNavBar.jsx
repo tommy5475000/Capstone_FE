@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import style from "./AdminNavBarStyle.module.scss";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import LiveTvIcon from "@mui/icons-material/LiveTv";
+import WorkOffIcon from '@mui/icons-material/WorkOff';
 import MovieIcon from "@mui/icons-material/Movie";
+import WorkIcon from '@mui/icons-material/Work';
 import { useNavigate } from "react-router-dom";
+import ModeCommentIcon from '@mui/icons-material/ModeComment';
 
 export default function AdminNavBar() {
 //   const [showMovieTab, setShowMovieTab] = useState(false);
@@ -35,11 +37,12 @@ export default function AdminNavBar() {
           <a onClick={() => navigate("/admin/users")}>Quản lý người dùng</a>
         </div>
         <div className={style.jss2}>
-          <LiveTvIcon />
+          <WorkIcon />
           <a onClick={() => navigate("/admin/jobs")}>Quản lý công việc</a>
         </div>
 
         <div className={style.jss2} id="user">
+          <WorkOffIcon/>
           <a onClick={() => navigate("/admin/typeJobs")}>
             Quản lý loại công việc
           </a>
@@ -47,6 +50,12 @@ export default function AdminNavBar() {
         <div className={style.jss2}>
           <MovieIcon />
           <a onClick={() => navigate("/admin/jobForRent")}>Quản lý dịch vụ</a>
+        </div>
+        <div className={style.jss2} id="user">
+          <ModeCommentIcon/>
+          <a onClick={() => navigate("/admin/comments")}>
+            Quản lý bình luận
+          </a>
         </div>
       </div>
     </div>

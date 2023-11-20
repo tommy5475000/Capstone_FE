@@ -35,12 +35,12 @@ export default function AdminHeader() {
                         variant="h3"
                         sx={{ fontSize: 16, fontWeight: 500 }}>{currentUser.name}</Typography>
                 </a>
-                <a className={style.jss2} lg="6" item="true">
+                <a className={style.jss2} lg="6" item="true" onClick={handleSignoutSwal}>
                     <LogoutIcon className={style.jss3} />
                     <Typography
                         variant="h3"
                         sx={{ fontSize: 16, fontWeight: 500 }}>
-                        <a onClick={handleSignoutSwal}>Đăng Xuất</a>
+                        <a>Đăng Xuất</a>
                     </Typography>
                 </a>
             </div>
