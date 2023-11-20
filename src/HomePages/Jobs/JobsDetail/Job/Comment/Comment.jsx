@@ -1,37 +1,55 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import {  useLocation, useNavigate, useParams } from "react-router-dom";
 import { getCommentJob } from "../../../../../apis/jobsAPI";
 import { Button, Grid, Input } from "@mui/material";
 import style from "./styleComment.module.scss";
 import StarIcon from "@mui/icons-material/Star";
 import { postComment } from "../../../../../apis/user";
+import { useUserContext } from "../../../../../context/UserContext";
 
 export default function Comment() {
+  const { currentUser } = useUserContext();
+
+  const navigate = useNavigate();
   const { id } = useParams();
   const { data = [], refetch } = useQuery({
     queryKey: ["Comment", id],
     queryFn: () => getCommentJob(id),
   });
-  console.log(data);
 
-  const mutation = useMutation({
+  const maCongViec = id;
+  const maNguoiBinhLuan = currentUser?.user?.id;
+  const currentDate = new Date();
+  const ngayBinhLuan = currentDate.toLocaleDateString();
+  const [noiDung, setNoiDung] = useState("");
+  const saoBinhLuan = 10;
+
+  const { mutate: handlePost } = useMutation({
     mutationFn: (payload) => postComment(payload),
     onSuccess: () => {
-      refetch();
+      refetch()
     },
   });
-
-  const [newComment, setNewComment] = useState("");
-
+  const location = useLocation();
   const handlePostComment = () => {
-    // Thực hiện mutation khi người dùng click vào nút "Add Comment"
-    mutation.mutate({
-      jobId: id,
-      content: newComment,
-      // Các thông tin khác cần thiết
-    });
+    if (!currentUser) {
+      // User chưa đăng nhập, bạn có thể thực hiện việc chuyển hướng đến trang login
+      const url = `/sign-in?redirectTo=${location.pathname}`;
+      // user chưa đăng nhập => redirect về trang login
+      navigate(url);
+    }
+    const commentData = {
+      maCongViec,
+      maNguoiBinhLuan,
+      ngayBinhLuan,
+      noiDung,
+      saoBinhLuan,
+    };
+
+    handlePost(commentData);
   };
+
   return (
     <Grid className={style.js1}>
       {data.map((item) => (
@@ -62,8 +80,8 @@ export default function Comment() {
           <Input
             placeholder="Nhập nội dung bình luận..."
             className={style.js3}
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
+            value={noiDung}
+            onChange={(e) => setNoiDung(e.target.value)}
           ></Input>
         </Grid>
         <Grid className={style.js4}>

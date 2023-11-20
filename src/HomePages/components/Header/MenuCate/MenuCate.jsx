@@ -21,7 +21,7 @@ export default function MenuCate() {
     queryKey: ["jobs"],
     queryFn: getMenuJobs,
   });
-
+console.log(data);
   return (
     //Ẩn khi di chuột ra
     <Grid onMouseLeave={() => setIsVisible(false)}>

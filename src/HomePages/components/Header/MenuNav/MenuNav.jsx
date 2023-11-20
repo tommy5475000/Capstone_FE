@@ -8,20 +8,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import { Grid, Stack } from "@mui/material";
+import { Avatar, Grid, Stack, Tooltip } from "@mui/material";
 import Search from "./Search/Search";
 import { useNavigate } from "react-router-dom";
 import MenuCate from "../MenuCate";
 import style from "./styleMenuNav.module.scss";
-
-const pages = [
-  "Business solutions",
-  "Explore",
-  "Become a Seller",
-  "Sign In",
-  "Join",
-];
-// const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { useUserContext } from "../../../../context/UserContext";
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -43,11 +35,32 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  const { currentUser, handleSignout } = useUserContext();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (currentUser) {
+      // Xử lý logic khi có currentUser từ local storage
+      setIsLoggedIn(true);
+    }
+  }, [currentUser]); // Chạy một lần sau khi component được render
+
   const handleSignIn = (text) => {
-    if (text === "Sign In") {
-      navigate("/Sign-In");
+    if (text === "Sign In" || text === "Join") {
+      if (!isLoggedIn) {
+        navigate("/sign-in");
+      }
+    } else if (text === "Logout") {
+      handleSignout();
+      setIsLoggedIn(false);
     }
   };
+
+  const pages = isLoggedIn
+    ? ["Business solutions", "Explore", "Become a Seller", "Sign Out"]
+    : ["Business solutions", "Explore", "Become a Seller", "Sign In", "Join"];
+
+  const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
   const [scrolling, setScrolling] = useState(false);
   // Sử dụng useEffect để theo dõi sự kiện cuộn
@@ -209,7 +222,7 @@ function ResponsiveAppBar() {
 
             <Grid item md={7} className={style.js1}>
               <Grid item md={8}>
-                <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }}}>
+                <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                   {pages.map((page, index) => (
                     <Button
                       key={index}
@@ -222,7 +235,56 @@ function ResponsiveAppBar() {
                         border: page === "Join" ? "1px solid black" : "none",
                       }}
                     >
-                      {page}
+                      {page === "Sign Out" ? (
+                        <Box sx={{ flexGrow: 0 }}>
+                          <Tooltip title="Open settings">
+                            <IconButton
+                              onClick={handleOpenUserMenu}
+                              sx={{ p: 0 }}
+                            >
+                              <Avatar
+                                alt="Remy Sharp"
+                                src="/static/images/avatar/2.jpg"
+                              />
+                            </IconButton>
+                          </Tooltip>
+                          <Menu
+                            sx={{ mt: "45px" }}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                              vertical: "top",
+                              horizontal: "right",
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                              vertical: "top",
+                              horizontal: "right",
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                          >
+                            {settings.map((setting) => (
+                              <MenuItem
+                                key={setting}
+                                onClick={() => {
+                                  if (setting === "Logout") {
+                                    handleSignIn(setting); // Gọi hàm handleSignIn khi Logout được click
+                                  } else {
+                                    handleCloseUserMenu(); // Đóng menu nếu không phải Logout
+                                  }
+                                }}
+                              >
+                                <Typography textAlign="center">
+                                  {setting}
+                                </Typography>
+                              </MenuItem>
+                            ))}
+                          </Menu>
+                        </Box>
+                      ) : (
+                        <>{page}</>
+                      )}
                     </Button>
                   ))}
                 </Box>
@@ -230,7 +292,7 @@ function ResponsiveAppBar() {
             </Grid>
           </Stack>
         </Container>
-        <Grid className={scrollingCate ? "" : style.js4 }>
+        <Grid className={scrollingCate ? "" : style.js4}>
           <MenuCate />
         </Grid>
       </AppBar>

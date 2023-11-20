@@ -189,7 +189,7 @@ export default function JobInfor() {
         </Grid>
 
         <Grid item sm={12} md={5}>
-          <JobBook id={id} data={data}/>
+          <JobBook jobId={id} data={data}/>
         </Grid>
       </Grid>
     </Grid>

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from "react";
 import { alpha, InputBase, styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Search() {
+
+
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -19,7 +21,7 @@ export default function Search() {
       width: "auto",
     },
   }));
-  
+
   const SearchIconWrapper = styled("div")(({ theme }) => ({
     padding: theme.spacing(0, 2),
     height: "100%",
@@ -28,9 +30,9 @@ export default function Search() {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color:"black"
+    color: "black",
   }));
-  
+
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: "inherit",
     "& .MuiInputBase-input": {
@@ -47,18 +49,14 @@ export default function Search() {
 
   return (
     <Search>
-    <SearchIconWrapper>
-      <SearchIcon />
-    </SearchIconWrapper>
-    <StyledInputBase
-      placeholder="Search…"
-      inputProps={{ "aria-label": "search" }}
-      sx={{ color:"black", width: "40ch" }}
-    />
-  </Search>
-  )
+      <SearchIconWrapper>
+        <SearchIcon />
+      </SearchIconWrapper>
+      <StyledInputBase
+        placeholder="Search…"
+        inputProps={{ "aria-label": "search" }}
+        sx={{ color: "black", width: "40ch" }}
+      />
+    </Search>
+  );
 }
-
-
-
-
