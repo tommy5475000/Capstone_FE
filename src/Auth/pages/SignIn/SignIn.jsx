@@ -18,7 +18,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useUserContext } from "../../../context/UserContext";
 
 
-export default function SignIn() {
+export default function Signin() {
   const signinSchema = object({
     email: string().required("Tài khoản không được để trống"),
     password: string()
